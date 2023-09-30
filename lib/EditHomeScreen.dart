@@ -1,25 +1,41 @@
-import 'package:expencetracker/MyHomePage.dart';
+import 'package:expencetracker/ExploreScreen.dart';
 import 'package:expencetracker/Resourcess/Databasehelper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
+class EditHomeScreen extends StatefulWidget {
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  var updateid="";
+  EditHomeScreen({required this.updateid});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<EditHomeScreen> createState() => _EditHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _EditHomeScreenState extends State<EditHomeScreen> {
 
   TextEditingController _title = TextEditingController();
   TextEditingController _remark = TextEditingController();
   TextEditingController _amount = TextEditingController();
 
-
-
   var tracker="Expense";
+  viewdata() async
+  {
+    Databasehelper obj = new Databasehelper();
+    var data = await obj.getsingledata(widget.updateid);
+    setState(() {
+      tracker = data[0]["type"].toString();
+      _title.text = data[0]["title"].toString();
+      _amount.text = data[0]["amount"].toString();
+    });
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewdata();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           IconButton(
                             icon: Icon(Icons.arrow_back_ios),
-                            onPressed: (){},
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
                           ),
                           SizedBox(width: 100.0),
                           Text("Home",style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
                           ),)
                         ],
                       ),
@@ -80,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text("Title :-",style: TextStyle(
-                              fontSize: 30.0,
+                            fontSize: 30.0,
                           ),),
                         ),
                       ),
@@ -93,28 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           controller: _title,
                           keyboardType: TextInputType.text,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft ,
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text("Remark :-",style: TextStyle(
-                              fontSize: 20.0,
-                          ),),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                              )
-                          ),
-                          controller: _remark,
-                          minLines: 5,
-                          maxLines: 5,
-                          keyboardType: TextInputType.multiline,
                         ),
                       ),
                       Align(
@@ -145,16 +141,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () async{
 
                             var title = _title.text.toString();
-                            var remark = _remark.text.toString();
                             var amount = _amount.text.toString();
 
-                            Databasehelper obj = new Databasehelper();
-                            var id = await obj.insertTrakor(tracker,title,remark,amount);
+                            Databasehelper obj = await Databasehelper();
+                            var status = await obj.updateexptrackor(title,tracker,amount,widget.updateid);
+                            if(status==1)
+                              {
+                                Navigator.of(context).pop(); // update
+                                Navigator.of(context).pop(); // view
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => ExploreScreen())
+                                );
+                              }
+                            else
+                              {
+                                print("Not Updated");
+                              }
 
-                            var snackbar = SnackBar(
-                              content: Text("Record Inserted at :" + id.toString()),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
                           },
                           style: ButtonStyle(
@@ -165,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
                           ),
-                          child: Text("Submit",style: TextStyle(
+                          child: Text("Update",style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
                           ),),
