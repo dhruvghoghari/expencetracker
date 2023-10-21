@@ -14,7 +14,6 @@ class EditHomeScreen extends StatefulWidget {
 class _EditHomeScreenState extends State<EditHomeScreen> {
 
   TextEditingController _title = TextEditingController();
-  TextEditingController _remark = TextEditingController();
   TextEditingController _amount = TextEditingController();
 
   var tracker="Expense";
@@ -150,15 +149,12 @@ class _EditHomeScreenState extends State<EditHomeScreen> {
                                 Navigator.of(context).pop(); // update
                                 Navigator.of(context).pop(); // view
                                 Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => ExploreScreen())
-                                );
+                                MaterialPageRoute(builder: (context) => ExploreScreen()));
                               }
                             else
                               {
                                 print("Not Updated");
                               }
-
-
                           },
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

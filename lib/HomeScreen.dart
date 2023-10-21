@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,8 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _title = TextEditingController();
   TextEditingController _remark = TextEditingController();
   TextEditingController _amount = TextEditingController();
-
-
 
   var tracker="Expense";
 
@@ -49,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       SizedBox(height: 10.0),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -74,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Text("Expense")
                         ],
-                      ),
+                      ),      // Radio button
                       Align(
                         alignment: Alignment.centerLeft ,
                         child: Padding(
@@ -138,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(height: 10.0),
+
                       Container(
                         height: 50.0,
                         width: 150.0,

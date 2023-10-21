@@ -101,10 +101,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                                   Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => EditHomeScreen(
-                                    updateid: id,
-                                  ))
+                                    updateid: id,))
                                   );
-
                                 },
                                 icon: Icon(Icons.edit,color: Colors.green,),
                                 tooltip: "Edit",
@@ -129,9 +127,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                         content: Text("Data Not Delete"),
                                       );
                                       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-
                                     }
-
                                 },
                                 icon: Icon(Icons.delete,color: Colors.red,),
                                 tooltip: "delete",
